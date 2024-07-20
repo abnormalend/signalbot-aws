@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "message_router_permissions" {
   }
 
   statement {
-    sid = "inboundqueue"
+    sid = "outboundqueue"
     actions = [
       "sqs:SendMessage"
     ]
