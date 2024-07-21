@@ -14,9 +14,9 @@ resource "null_resource" "install_libraries" {
     command     = "pip install -r requirements.txt -t ."
   }
 
-  triggers = {
-    run_on_requirements_change =var.requirements
-  }
+  # triggers = {
+  #   run_on_requirements_change =var.requirements
+  # }
   depends_on = [local_file.build_dir]
 }
 
