@@ -56,7 +56,7 @@ resource "aws_iam_role_policy_attachment" "extras" {
 
 data "aws_iam_policy_document" "allow_router" {
   statement {
-    sid = local.function_name
+    sid = "${var.function_name}${var.env}"
     actions = [
       "lambda:InvokeFunction",
       "lambda:InvokeAsync"
