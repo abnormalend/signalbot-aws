@@ -10,14 +10,14 @@ resource "aws_lambda_function" "message_router" {
   filename         = data.archive_file.message_router.output_path
   source_code_hash = data.archive_file.message_router.output_base64sha256
   runtime          = "python3.12"
-  handler          = "message_router.handler"
+  handler          = "message_router.lambda_handler"
+
 }
 
 resource "aws_iam_role" "message_router" {
   name               = "message_router_lambda_role_${var.env}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
-
 
 data "aws_iam_policy_document" "assume_role" {
   statement {
@@ -68,4 +68,9 @@ resource "aws_iam_policy" "message_router_permissions" {
 resource "aws_iam_role_policy_attachment" "message_router_permissions" {
   role       = aws_iam_role.message_router.id
   policy_arn = aws_iam_policy.message_router_permissions.arn
+}
+
+resource "aws_lambda_event_source_mapping" "inbound" {
+  function_name    = aws_lambda_function.message_router.function_name
+  event_source_arn = aws_sqs_queue.inbound.arn
 }

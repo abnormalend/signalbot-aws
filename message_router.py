@@ -1,4 +1,4 @@
 import boto3
 
-def handler(event, context):
+def lambda_handler(event, context):
     print("test")
