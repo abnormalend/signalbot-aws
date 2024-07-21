@@ -8,6 +8,6 @@ provider "aws" {
   }
 }
 
-provider "pypi" {
-  # Configuration options
-}
+# provider "pypi" {
+#   # Configuration options
+# }
