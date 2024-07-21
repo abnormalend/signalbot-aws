@@ -3,14 +3,14 @@ locals {
 }
 
 resource "local_file" "build_dir" {
-  filename = "${local.temp_dir}/requirements.txt"
+  filename = "${local.temp_dir}/python/requirements.txt"
   content  = var.requirements
 }
 
 resource "null_resource" "install_libraries" {
   provisioner "local-exec" {
     when        = create
-    working_dir = local.temp_dir
+    working_dir = "${local.temp_dir}/python"
     command     = "pip install -r requirements.txt -t ."
   }
 
