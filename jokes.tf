@@ -7,7 +7,7 @@ module "jokes_layer" {
 module "jokes" {
   source            = "./modules/chatbot_function"
   function_name     = "jokes"
-  function_filename = "functions/jokes.py"
+  function_filename = "${path.cwd}/functions/jokes.py"
   valid_users       = "all"
   invoke_string     = "joke"
   router_arn        = aws_lambda_function.message_router.arn

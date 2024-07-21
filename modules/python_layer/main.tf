@@ -9,7 +9,7 @@ resource "local_file" "build_dir" {
 
 resource "null_resource" "install_libraries" {
   provisioner "local-exec" {
-    when        = create
+    # when        = create
     working_dir = "${local.temp_dir}/python"
     command     = "pip install -r requirements.txt -t ."
   }
