@@ -1,7 +1,7 @@
 module "jokes_layer" {
   source     = "./modules/python_layer"
   layer_name = "pyjokes"
-  requirements = "pyjokes"
+  requirements = "pyjokes >= 0.6.0"
 }
 
 module "jokes" {
