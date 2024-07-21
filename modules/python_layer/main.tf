@@ -33,3 +33,7 @@ resource "aws_lambda_layer_version" "this" {
   source_code_hash    = data.archive_file.this.output_base64sha512
   compatible_runtimes = var.runtimes
 }
+
+output arn {
+    value = aws_lambda_layer_version.this.arn
+}
