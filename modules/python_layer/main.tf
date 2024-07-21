@@ -3,19 +3,19 @@ locals {
 }
 
 resource "local_file" "build_dir" {
-  filename = "${local.temp_dir}/readme.md"
-  content  = "# Built with terraform #"
+  filename = "${local.temp_dir}/requirements.txt"
+  content  = var.requirements
 }
 
 resource "null_resource" "install_libraries" {
   provisioner "local-exec" {
     when        = create
     working_dir = local.temp_dir
-    command     = "pip install ${var.requirements_path} -t ."
+    command     = "pip install -r requirements.txt -t ."
   }
 
   triggers = {
-    run_on_requirements_change = filemd5(var.requirements_path)
+    run_on_requirements_change =var.requirements
   }
   depends_on = [local_file.build_dir]
 }

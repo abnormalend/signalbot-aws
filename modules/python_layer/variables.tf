@@ -1,6 +1,11 @@
-variable "requirements_path" {
+# variable "requirements_path" {
+#   type        = string
+#   description = "Where to find the requirements folder"
+# }
+
+variable "requirements" {
   type        = string
-  description = "Where to find the requirements folder"
+  description = "What to install?"
 }
 
 variable "layer_name" {
