@@ -37,7 +37,7 @@ variable "extra_permissions" {
   default     = []
 }
 
-variable "router_arn" {
+variable "router_role_name" {
   type        = string
   description = "The function to grant invoke permissions to"
 }

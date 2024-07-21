@@ -10,7 +10,7 @@ module "jokes" {
   function_filename = "${path.cwd}/functions/jokes.py"
   valid_users       = "all"
   invoke_string     = "joke"
-  router_arn        = aws_lambda_function.message_router.arn
+  router_role_name  = aws_iam_role.message_router.id
   env               = var.env
   layers            = [module.jokes_layer.arn]
 }

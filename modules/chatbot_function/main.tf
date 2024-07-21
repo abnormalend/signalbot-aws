@@ -73,6 +73,6 @@ resource "aws_iam_policy" "allow_router" {
 }
 
 resource "aws_iam_role_policy_attachment" "allow_router" {
-  role       = var.router_arn
+  role       = var.router_role_name
   policy_arn = aws_iam_policy.allow_router.arn
 }
