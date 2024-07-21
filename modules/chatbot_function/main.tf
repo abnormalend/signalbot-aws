@@ -5,7 +5,7 @@ data "archive_file" "this" {
 }
 
 locals {
-  function_name = "chatbotfunction-${var.function_name}-${var.env}"
+  function_name = "signalbot-function-${var.function_name}-${var.env}"
   handler       = "${replace(var.function_filename, ".py", "")}.${var.handler}"
 }
 
@@ -21,6 +21,8 @@ resource "aws_lambda_function" "this" {
     invoke = var.invoke_string
     users  = var.valid_users
   }
+
+  layers = var.layers
 }
 
 resource "aws_iam_role" "this" {

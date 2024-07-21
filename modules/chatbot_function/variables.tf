@@ -41,3 +41,9 @@ variable "router_arn" {
   type        = string
   description = "The function to grant invoke permissions to"
 }
+
+variable "layers" {
+  type = set(string)
+  default = [  ]
+  description = "Additional Layers to give the lambda function"
+}

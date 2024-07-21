@@ -5,13 +5,12 @@ data "archive_file" "message_router" {
 }
 
 resource "aws_lambda_function" "message_router" {
-  function_name    = "message_router_${var.env}"
+  function_name    = "signalbot-messagerouter-${var.env}"
   role             = aws_iam_role.message_router.arn
   filename         = data.archive_file.message_router.output_path
   source_code_hash = data.archive_file.message_router.output_base64sha256
   runtime          = "python3.12"
   handler          = "message_router.lambda_handler"
-
 }
 
 resource "aws_iam_role" "message_router" {
