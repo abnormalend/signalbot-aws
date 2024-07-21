@@ -7,3 +7,7 @@ provider "aws" {
     }
   }
 }
+
+provider "pypi" {
+  # Configuration options
+}

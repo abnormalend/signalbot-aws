@@ -80,3 +80,17 @@ provider "registry.terraform.io/hashicorp/null" {
     "zh:c23084e1b23577de22603cff752e59128d83cfecc2e6819edadd8cf7a10af11e",
   ]
 }
+
+provider "registry.terraform.io/jeffwecan/pypi" {
+  version     = "0.0.12"
+  constraints = "0.0.12"
+  hashes = [
+    "h1:choFYrEecnl38AYRR+ofWLSwWbIKwfBOyNnaK3el7J4=",
+    "zh:06b4471f6e66f4cb626a0d63d02768276e86139b1c163a664d7660cd5c66fd06",
+    "zh:2a15febbde456b21240808164b34997d80e535c2df0a810d6b78fce8979cc24d",
+    "zh:9185ef3ccf556daa798be7be8bbc5ac0b9da6cea2ead8573cec4dac46d25bd6a",
+    "zh:d4605ba7b6781c60c6aec266321685a8c9821f09ade710145b41c8e59d57f254",
+    "zh:e4e3e57fe710bea00cf96c30c6755845cf62c4871b787eda77a05a133e3e8568",
+    "zh:e7110808e555305ac632798677fca6adc4142c9faed4a58bc316944e9b4b9ad2",
+  ]
+}
