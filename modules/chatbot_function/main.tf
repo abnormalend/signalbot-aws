@@ -1,6 +1,6 @@
 data "archive_file" "this" {
   type        = "zip"
-  source_file = "${var.function_filename}.py"
+  source_file = "${var.function_filename}"
   output_path = "${var.function_name}.zip"
 }
 

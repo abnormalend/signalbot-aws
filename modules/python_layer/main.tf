@@ -30,7 +30,7 @@ data "archive_file" "this" {
 resource "aws_lambda_layer_version" "this" {
   layer_name          = var.layer_name
   filename            = data.archive_file.this.output_path
-  source_code_hash    = data.archive_file.this.output_base64sha512
+  source_code_hash    = sha256(var.requirements)
   compatible_runtimes = var.runtimes
 }
 
