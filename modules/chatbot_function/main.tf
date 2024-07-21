@@ -26,7 +26,7 @@ resource "aws_lambda_function" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name               = "message_router_lambda_role_${var.env}"
+  name               = "${local.function_name}_role_${var.env}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
