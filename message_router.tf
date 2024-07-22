@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "message_router_permissions" {
   }
 
     statement {
-    sid = "parameterstore_read"
+    sid = "parameterstoreread"
     actions = [
       "ssm:DescribeParameters",
       "ssm:GetParameter"
