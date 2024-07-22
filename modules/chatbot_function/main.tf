@@ -8,6 +8,11 @@ locals {
   function_name = "signalbot-function-${var.function_name}-${var.env}"
 }
 
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+
+
 resource "aws_lambda_function" "this" {
   function_name    = local.function_name
   role             = aws_iam_role.this.arn
@@ -19,6 +24,7 @@ resource "aws_lambda_function" "this" {
   tags = {
     invoke = var.invoke_string
     users  = var.valid_users
+    arn = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.function_name}"
   }
 
   layers = var.layers
