@@ -21,12 +21,14 @@ resource "aws_lambda_function" "this" {
   runtime          = var.runtime
   handler          = "${var.function_name}.${var.handler_function}"
 
-  tags = {
-    invoke = var.invoke_string
-    users  = var.valid_users
-    arn = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.function_name}"
+  environment {
+    variables = {
+      arn = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.function_name}"
+      invoke = var.invoke_string
+      users  = var.valid_users
+    }
   }
-
+  
   layers = var.layers
 }
 
