@@ -85,7 +85,7 @@ resource "aws_lambda_event_source_mapping" "inbound" {
   event_source_arn = aws_sqs_queue.inbound.arn
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
+resource "aws_iam_role_policy_attachment" "parameter_store" {
   role       = aws_iam_role.message_router.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
