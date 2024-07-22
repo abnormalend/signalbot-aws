@@ -84,7 +84,7 @@ resource "aws_iam_role_policy_attachment" "allow_router" {
 }
 
 resource "aws_ssm_parameter" "this" {
-  name = "signalbot/function/${var.function_name}"
+  name = "/signalbot/function/${var.function_name}"
   type = "String"
   value = <<EOT
   {
