@@ -58,16 +58,16 @@ data "aws_iam_policy_document" "message_router_permissions" {
     ]
   }
 
-    statement {
-    sid = "parameterstoreread"
-    actions = [
-      "ssm:DescribeParameters",
-      "ssm:GetParameter"
-    ]
-    resources = [
-      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/signalbot/function/*"
-    ]
-  }
+  #   statement {
+  #   sid = "parameterstoreread"
+  #   actions = [
+  #     "ssm:DescribeParameters",
+  #     "ssm:GetParameter"
+  #   ]
+  #   resources = [
+  #     "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/signalbot/function/*"
+  #   ]
+  # }
 }
 
 resource "aws_iam_policy" "message_router_permissions" {
@@ -83,4 +83,9 @@ resource "aws_iam_role_policy_attachment" "message_router_permissions" {
 resource "aws_lambda_event_source_mapping" "inbound" {
   function_name    = aws_lambda_function.message_router.function_name
   event_source_arn = aws_sqs_queue.inbound.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_basic" {
+  role       = aws_iam_role.message_router.id
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
