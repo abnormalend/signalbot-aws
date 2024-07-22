@@ -23,12 +23,11 @@ resource "aws_lambda_function" "this" {
 
   environment {
     variables = {
-      arn = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.function_name}"
       invoke = var.invoke_string
       users  = var.valid_users
     }
   }
-  
+
   layers = var.layers
 }
 
@@ -82,4 +81,17 @@ resource "aws_iam_policy" "allow_router" {
 resource "aws_iam_role_policy_attachment" "allow_router" {
   role       = var.router_role_name
   policy_arn = aws_iam_policy.allow_router.arn
+}
+
+resource "aws_ssm_parameter" "this" {
+  name = "signalbot/function/${var.function_name}"
+  type = "String"
+  value = <<EOT
+  {
+    "function_name": "${var.function_name}",
+    "arn": "${aws_lambda_function.this.arn}",
+    "invoke_arn": "${aws_lambda_function.this.invoke_arn}",
+    "invoke_string": "${var.invoke_string}"
+  }
+  EOT
 }
