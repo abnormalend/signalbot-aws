@@ -95,3 +95,21 @@ resource "aws_ssm_parameter" "this" {
   }
   EOT
 }
+
+data "aws_iam_policy_document" "parameterstore" {
+  statement {
+    sid = "parameterstore_read"
+    actions = [
+      "ssm:DescribeParameters",
+      "ssm:GetParameter"
+    ]
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/signalbot/function/*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "allow_router" {
+  role       = aws_iam_role.this.id
+  policy_arn = data.aws_iam_policy.parameterstore.arn
+}
