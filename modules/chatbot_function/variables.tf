@@ -3,9 +3,9 @@ variable "function_name" {
   description = "What is the name of the lambda function?"
 }
 
-variable "function_filename" {
+variable "function_file_path" {
   type        = string
-  description = "What is the name of the lambda function on the filesystem?"
+  description = "Where do we find the function?"
 }
 
 variable "env" {
@@ -17,7 +17,7 @@ variable "runtime" {
   default = "python3.12"
 }
 
-variable "handler" {
+variable "handler_function" {
   type        = string
   default     = "lambda_handler"
   description = "This is just the second half, we work out the first half from function_filename"

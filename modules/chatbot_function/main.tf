@@ -1,12 +1,11 @@
 data "archive_file" "this" {
   type        = "zip"
-  source_file = "${var.function_filename}"
+  source_file = "${var.function_file_path}/${var.function_name}.py"
   output_path = "${var.function_name}.zip"
 }
 
 locals {
   function_name = "signalbot-function-${var.function_name}-${var.env}"
-  handler       = "${replace(var.function_filename, ".py", "")}.${var.handler}"
 }
 
 resource "aws_lambda_function" "this" {
@@ -15,7 +14,7 @@ resource "aws_lambda_function" "this" {
   filename         = data.archive_file.this.output_path
   source_code_hash = data.archive_file.this.output_base64sha256
   runtime          = var.runtime
-  handler          = local.handler
+  handler          = "${var.function_name}.${var.handler_function}"
 
   tags = {
     invoke = var.invoke_string
