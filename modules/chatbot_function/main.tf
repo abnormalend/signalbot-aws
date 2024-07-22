@@ -8,11 +8,6 @@ locals {
   function_name = "signalbot-function-${var.function_name}-${var.env}"
 }
 
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}
-
-
 resource "aws_lambda_function" "this" {
   function_name    = local.function_name
   role             = aws_iam_role.this.arn
@@ -81,35 +76,4 @@ resource "aws_iam_policy" "allow_router" {
 resource "aws_iam_role_policy_attachment" "allow_router" {
   role       = var.router_role_name
   policy_arn = aws_iam_policy.allow_router.arn
-}
-
-resource "aws_ssm_parameter" "this" {
-  name = "/signalbot/function/${var.function_name}"
-  type = "String"
-  value = <<EOT
-  {
-    "function_name": "${var.function_name}",
-    "arn": "${aws_lambda_function.this.arn}",
-    "invoke_arn": "${aws_lambda_function.this.invoke_arn}",
-    "invoke_string": "${var.invoke_string}"
-  }
-  EOT
-}
-
-data "aws_iam_policy_document" "parameterstore" {
-  statement {
-    sid = "parameterstore_read"
-    actions = [
-      "ssm:DescribeParameters",
-      "ssm:GetParameter"
-    ]
-    resources = [
-      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/signalbot/function/*"
-    ]
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "allow_router" {
-  role       = aws_iam_role.this.id
-  policy_arn = data.aws_iam_policy.parameterstore.arn
 }
