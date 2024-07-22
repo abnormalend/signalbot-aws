@@ -57,6 +57,17 @@ data "aws_iam_policy_document" "message_router_permissions" {
       aws_sqs_queue.outbound.arn
     ]
   }
+
+    statement {
+    sid = "parameterstore_read"
+    actions = [
+      "ssm:DescribeParameters",
+      "ssm:GetParameter"
+    ]
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/signalbot/function/*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "message_router_permissions" {

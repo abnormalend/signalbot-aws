@@ -11,5 +11,3 @@ resource "aws_ssm_parameter" "this" {
   }
   EOT
 }
-
-
