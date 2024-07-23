@@ -14,7 +14,7 @@ resource "aws_lambda_function" "message_router" {
   timeout          = 10
   environment {
     variables = {
-      outboundqueue = aws_sqs_queue.outbound.id
+      OUTBOUNDQUEUE = aws_sqs_queue.outbound.id
     }
   }
 }

@@ -1,7 +1,6 @@
-import boto3
-import os
+import json
 from pyjokes import get_joke
 
 
 def lambda_handler(event, context):
-    print(get_joke())
+    return get_joke()
