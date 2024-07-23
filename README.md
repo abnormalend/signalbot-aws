@@ -12,3 +12,18 @@ signalbot-function-functionname-env
 
 example:
 signalbot-function-jokes-dev
+
+
+# Commands in old signal bot
+eightball
+send_joke
+help
+show_admins
+show_blacklist
+branch
+drunkpost
+show_themes
+show_active_theme
+set_theme
+send_nudes
+heyclay
