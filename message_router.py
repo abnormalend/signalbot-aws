@@ -3,39 +3,45 @@ import json
 import logging
 import os
 
-# Set up logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+
+# This empty dict will serve as a global list of valid functions.
 functions = {}
+
+# Set up the Queue for sending responses
 SQS_QUEUE_URL = os.environ["OUTBOUNDQUEUE"]
 sqs_client = boto3.client('sqs')
+
+# Set up the lambda client so we can call the other functions
 lambda_client = boto3.client('lambda')
 
 
 def lambda_handler(event, context):
-    global functions
-    command = get_command_from_message(event["message"])
+    global functions                #We want to accesss the functions dict
+    command = get_command_from_message(event["message"])# Extract the command
+    
+    # We get two tries at finding the function, this also triggers the refresh
     response = invoke_function_if_found(command, event["message"])
     if not response:
-        logging.warning("Not found, reloading")
-        functions = load_functions_from_parameters()
+        logging.warning(f"{command} not found, reloading")
+        functions = load_functions_from_parameters() #Refresh
         response = invoke_function_if_found(command, event["message"])
     
     if not response:
-        return False
+        logging.warning("Sending failure message")
+        send_response("TODO: Valid failure message here")
     else:
         send_response(response)
-        return True
+    return True
 
 
 def invoke_function_if_found(command, message):
     if command in functions:
-        # TODO: Call Lambda, return response
-        logging.info(f"found {command}")
-        logging.info(functions[command])
+        logging.debug(f"found {command}")
         response = lambda_client.invoke(
             FunctionName=functions[command],
-            InvocationType='RequestResponse',  # Use 'Event' for async invocation
+            InvocationType='RequestResponse',
             Payload=json.dumps(message)
         )
         response_payload = json.loads(response['Payload'].read())
@@ -56,20 +62,17 @@ def get_command_from_message(message):
     return message.split(" ")[0].replace("/","")
 
 def load_functions_from_parameters():
-    built_parameters = {}
+    functions_dict = {}
     raw_parameters = get_parameters_by_pattern("/signalbot/function/")
     for item in raw_parameters:
         json_item = json.loads(item["Value"])
-        built_parameters[json_item["invoke_string"]] = json_item["arn"]
-    return built_parameters
+        functions_dict[json_item["invoke_string"]] = json_item["arn"]
+    return functions_dict
 
-def get_parameters_by_pattern(pattern, region='us-east-2'):
-    # Initialize a session using boto3
-    session = boto3.Session(region_name=region)
-    ssm_client = session.client('ssm')
+def get_parameters_by_pattern(pattern):
+    ssm_client = boto3.client('ssm')
 
-    # List to hold all matching parameters
-    parameters = []
+    parameters = [] # List to hold all matching parameters
 
     # Paginate through results
     paginator = ssm_client.get_paginator('describe_parameters')
