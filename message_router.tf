@@ -11,6 +11,12 @@ resource "aws_lambda_function" "message_router" {
   source_code_hash = data.archive_file.message_router.output_base64sha256
   runtime          = "python3.12"
   handler          = "message_router.lambda_handler"
+  timeout          = 10
+  environment {
+    variables = {
+      outboundqueue = aws_sqs_queue.outbound.id
+    }
+  }
 }
 
 resource "aws_iam_role" "message_router" {
