@@ -41,3 +41,12 @@ resource "aws_iam_user_policy_attachment" "container" {
   policy_arn = aws_iam_policy.container.arn
   user       = aws_iam_user.container.name
 }
+
+output "container_access_id" {
+  value = aws_iam_access_key.container.id
+}
+
+output "container_access_secret" {
+  value     = aws_iam_access_key.container.secret
+  sensitive = true
+}
